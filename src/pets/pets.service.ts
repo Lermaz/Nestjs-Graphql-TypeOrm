@@ -27,6 +27,13 @@ export class PetsService {
     return await this.petsRepository.findOneOrFail({ where: { id: id } });
   }
 
+  async findByOwner(id: number): Promise<Pet[]> {
+    return this.petsRepository
+      .createQueryBuilder('pets')
+      .where('pets.ownerId = :id', { id })
+      .getMany();
+  }
+
   async getOwner(ownerId: number): Promise<Owner> {
     return await this.ownersService.findOne(ownerId);
   }
